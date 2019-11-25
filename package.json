@@ -1,0 +1,41 @@
+{
+  "name": "react-test",
+  "version": "1.0.0",
+  "description": "test react character",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunnyabc789/react-test.git"
+  },
+  "author": "sunnyabc789",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sunnyabc789/react-test/issues"
+  },
+  "homepage": "https://github.com/sunnyabc789/react-test#readme",
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.1",
+    "eslint": "^5.9.0",
+    "eslint-plugin-react": "^7.11.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "html-webpack-plugin": "^3.2.0",
+    "less-loader": "^4.1.0",
+    "style-loader": "^0.23.1",
+    "stylus-loader": "^3.0.2",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "less": "^3.8.1",
+    "lodash": "^4.17.11",
+    "stylus": "^0.54.5",
+    "webpack-dev-server": "^3.9.0"
+  }
+}
