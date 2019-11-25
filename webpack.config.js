@@ -41,6 +41,9 @@ module.exports = {
     inline: true,
     progress: true
   },
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.json']
+  },
   module: {
     rules: [
       {
