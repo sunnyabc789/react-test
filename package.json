@@ -50,8 +50,9 @@
   "dependencies": {
     "babel-polyfill": "6.26.0",
     "babel-runtime": "6.26.0",
+    "jointjs": "^3.1.1",
     "less": "^3.8.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "module-resolver": "^1.0.0",
     "stylus": "^0.54.5",
     "transform-runtime": "0.0.0",

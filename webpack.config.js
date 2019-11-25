@@ -29,6 +29,9 @@ module.exports = {
 		filename: '[name].[hash].js',
 		path: path.resolve(__dirname, 'dist')
   },
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.json']
+  },
   devtool:"#eval-source-map",
   devServer: {
     headers: {
