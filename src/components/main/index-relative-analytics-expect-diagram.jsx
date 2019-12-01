@@ -5,7 +5,7 @@ import genAlarmNode from './graph-nodes/alarm-node'
 import genUnderlineNode from './graph-nodes/underline-node'
 import genCirleNode from './graph-nodes/circle-node'
 import genLineInputNode from './graph-nodes/line-input-node'
-import * as joint from 'jointjs/index';
+import * as joint from 'jointjs';
 
 export default class IndexRelativeAnalyticsExpectDiagram extends React.Component {
   constructor() {
@@ -15,7 +15,9 @@ export default class IndexRelativeAnalyticsExpectDiagram extends React.Component
   componentDidMount() {
     let transform = _.get(this.props, 'value.transform') || {}
     let scale = _.get(this.props, 'value.scale')
-    let graph = new joint.dia.Graph()
+    let graph = new joint.dia.Graph({},{
+      cellNamespace: joint.shapes
+    })
 
     let paper = new joint.dia.Paper({
       el: this.chartDom,
@@ -28,6 +30,7 @@ export default class IndexRelativeAnalyticsExpectDiagram extends React.Component
           height: '100%'
         }
       },
+      cellViewNamespace: joint.shapes,
       interactive: false,
       gridSize: 10,
       drawGrid: false
