@@ -5,7 +5,7 @@ import genAlarmNode from './graph-nodes/alarm-node'
 import genUnderlineNode from './graph-nodes/underline-node'
 import genCirleNode from './graph-nodes/circle-node'
 import genLineInputNode from './graph-nodes/line-input-node'
-import * as joint from 'jointjs/index';
+// import * as joint from 'jointjs';
 
 export default class IndexRelativeAnalyticsExpectDiagram extends React.Component {
   constructor() {

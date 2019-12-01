@@ -39,6 +39,9 @@ export default (joint, graph, paper, {position, size, node}) => {
       '</div>'
     ].join(''),
 
+    initialize: function () {
+      console.log('success===');
+    },
     init: function() {
       // Update the box position whenever the underlying model changes.
       this.listenTo(this.model, 'change', this.updateBox)
@@ -123,5 +126,6 @@ if (!_.isEmpty(node.children)) {
 
   underlineNode.resize(size.width, 50)
   underlineNode.position(position.x, position.y - 21)
+
   return underlineNode
 }
