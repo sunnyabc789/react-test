@@ -22,15 +22,15 @@ const happyConf = {
 
 module.exports = {
 	entry: {
-		app: './src/entry/index.jsx'
+		app: './src/entry/index.js'
 	},
 	output: {
 		// filename: 'bundle.js',
 		filename: '[name].[hash].js',
 		path: path.resolve(__dirname, 'dist')
   },
-  devtool:"#eval-source-map",
-  devServer: {
+  devServer:
+   {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
@@ -47,11 +47,12 @@ module.exports = {
         test: /\.worker\.js$/,
         use: {loader: 'worker-loader'}
       },
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
       {
         test: /\.jsx?$/,
         exclude: '/node_modules/',
         use: [
-          packThreadCount === 0 ? 'babel-loader?cacheDirectory=true' : 'happypack/loader',
+          'babel-loader',
           env === 'production' ? 'remove-debug-loader' : null
         ].filter(x => x)
       },
