@@ -5,6 +5,6 @@ import App from '../components/main'
 const rootElement = document.getElementById('container')
 
 render (
-  <div>test</div>,
+  <App />,
   rootElement
 )
