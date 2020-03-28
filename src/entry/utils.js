@@ -54,7 +54,7 @@ export const layoutOptions = {
     enabled: true,
     duration: 400,
     createElement: function(item) {
-      return item
+      return item.getElement().cloneNode(true);
     }
   }
 };

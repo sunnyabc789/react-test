@@ -79,9 +79,7 @@ const App = () => {
           text={"Add more items"}
           icon={"&#xE145;"}
           onClick={() =>
-            setItems(
-              Array.prototype.concat(items[0], generateItems(), items.slice(1))
-            )
+            setItems(Array.prototype.concat(items, generateItems()))
           }
         />
       </Footer>
