@@ -57,7 +57,7 @@
     "lodash": "^4.17.11",
     "module-resolver": "^1.0.0",
     "muuri": "^0.8.0",
-    "muuri-react": "^3.0.0",
+    "muuri-react": "^3.0.3",
     "stylus": "^0.54.5",
     "transform-runtime": "0.0.0",
     "webpack-dev-server": "^3.9.0"
