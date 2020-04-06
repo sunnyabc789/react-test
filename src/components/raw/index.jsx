@@ -1,6 +1,9 @@
 import React, { useState, useEffect, Children  } from "react";
 import { useFilter, generateItems, layoutOptions } from "../rm/utils.js";
 import Muuri from 'muuri'
+import { ItemComponent } from "./itemcomponent.jsx";
+import { ItemAddController } from './controller'
+import { useMemoized } from './utils'
 
 function getItemsOwner(grid) {
   const key = Object.keys(grid).find(key =>
@@ -73,68 +76,39 @@ function addItems(
 
   // Show the added items (usefull just if the items are
   // hidden by default and the filter is not setted).
-  if (!filter && addOptions.show) muuri.show(indicesToAdd, { layout: false });
+  if (!filter && addOptions.show) {
+    muuri.show(indicesToAdd, { layout: false });
+  }
 }
 
-const _requests = []
 function emit(items) {
   for (let i = 0; i < _requests.length; i++) {
     _requests[i](items[i]);
   }
 }
 
-function decorateItem(item) {
-  /**
-    props,
-    data,
-    key,
-    fiber,
-    eventController,
-    dragWidth,
-    dragHeight,
-    draggable
-   */
-  item._component = {};
-  item.getProps = function getProps() {
-    return this._component.props || {};
-  };
-  item.getData = function getData() {
-    return this._component.data || {};
-  };
-  item.setData = function setData(data) {
-    item._component.data = Object.assign(this._component.data || {}, data);
-  };
-  item.deleteData = function deleteData() {
-    this._component.data = {};
-  };
-
-  // Change the sort data.
-  Object.defineProperty(item, "_sortData", {
-    get() {
-      return this.getData();
-    },
-    set() {
-      // nothing to do here.
-    }
-  });
-}
-
-function decorateDOMItem(DOMItem) {
-  DOMItem.style.position = "absolute";
-}
 
 
-_requests.push(item => {
-  decorateItem(item);
-  decorateDOMItem(item.getElement());
-  // value.itemRefController.setItem(item);
-})
 
 export default function TestMuuri() {
 
   const [grid, setGrid] = useState(null)
   const [items, setItems] = useState(generateItems());
 
+  const store = useMemoized(() => ({
+    // The Fiber owner of the items.
+    itemsOwner: null,
+    // Children of the previous rendered.
+    oldChildren: [],
+    // Controller that manages the items instancies.
+    itemAddController: new ItemAddController(),
+    // Controller that manages the items to be removed.
+    // Controller that manages the items sizes.
+    needFiltering: false,
+    needSorting: false
+  }));
+
+  store.itemAddController.useInit();
   // Children.
   const children = items.map(({ id, color, title, width, height }) => (
     <Item
@@ -175,18 +149,21 @@ export default function TestMuuri() {
     setGrid(grid)
   }, [])
 
+
   useEffect(() => {
     if (!grid) return
     //diff 找出需要插入的index
     vars.indicesToAdd = getIndicesToAdd(children, []);
     let itemsOwner = getItemsOwner(vars.grid)
+    //!!!stateNode 获得了对真实node的引用  此处3层 是正好拿到了需要的那层 如果没有嵌套一层 就不是3层? 原理 useEffect在render后执行
     vars.addedDOMItems = getStateNodes(itemsOwner, vars.indicesToAdd);
 
-    addItems(grid, vars.addedDOMItems, vars.indicesToAdd, { show: true }, () => {});
+    console.log(itemsOwner,'itemsOwner===')
+    addItems(grid, vars.addedDOMItems, vars.indicesToAdd, { show: true }, null);
     // New Items.
     const addedItems = grid.getItems(vars.indicesToAdd);
     // Emit the new items to the itemComponents.
-    emit(addedItems);
+    store.itemAddController.emit(addedItems);
   }, [items, grid])
   // useEffect(() => {
   //   if (!grid) return
@@ -202,7 +179,18 @@ export default function TestMuuri() {
   return (
     <div id="applications-management-layout" style={{ width: '1000px', height: '1000px' }}>
       <div style={{ width: '1000px', height: '1000px' }} ref={grid => (vars.grid = grid)} className="muuri-grid">
-        {children}
+        {
+          Children.map(children, child => (
+            <ItemComponent
+              key={child.key}
+              id={child.key}
+              propsToData={null}
+              itemAddController={store.itemAddController}
+            >
+              {child}
+            </ItemComponent>
+          ))
+        }
       </div>
     </div>
   )
