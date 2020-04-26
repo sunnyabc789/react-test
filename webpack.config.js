@@ -35,6 +35,7 @@ module.exports = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
     },
+    port: 8081,
     historyApiFallback: true,
     hot: true,
     // open: true,
