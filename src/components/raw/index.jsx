@@ -6,6 +6,7 @@ import { ItemAddController } from './controller'
 import { useMemoized } from './utils'
 
 function getItemsOwner(grid) {
+  //
   const key = Object.keys(grid).find(key =>
     key.startsWith("__reactInternalInstance$")
   );
@@ -26,6 +27,7 @@ function getStateNodes(itemsOwner, indices) {
 }
 
 function getStateNode(child) {
+  //定制化函数 这个层级专门为muuri设置
   child = child.child.child;
   while (!child.stateNode) child = child.child;
   return child.stateNode;
@@ -154,6 +156,7 @@ export default function TestMuuri() {
     if (!grid) return
     //diff 找出需要插入的index
     vars.indicesToAdd = getIndicesToAdd(children, []);
+    //!!!!异步获取真实node节点 不用document.getElementById
     let itemsOwner = getItemsOwner(vars.grid)
     //!!!stateNode 获得了对真实node的引用  此处3层 是正好拿到了需要的那层 如果没有嵌套一层 就不是3层? 原理 useEffect在render后执行
     vars.addedDOMItems = getStateNodes(itemsOwner, vars.indicesToAdd);
@@ -181,6 +184,7 @@ export default function TestMuuri() {
       <div style={{ width: '1000px', height: '1000px' }} ref={grid => (vars.grid = grid)} className="muuri-grid">
         {
           Children.map(children, child => (
+            //!!!这个ItemComponent其实就相当于一个装饰器  因为用的是函数式写法 装饰器就要这么写
             <ItemComponent
               key={child.key}
               id={child.key}
