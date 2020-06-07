@@ -4,7 +4,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const os = require('os')
 const env = process.env.NODE_ENV || 'development'
-const HappyPack = require('happypack')
 
 packThreadCount = os.cpus().length - 1
 
@@ -12,17 +11,10 @@ const extractTextPlugin = new ExtractTextPlugin({
   filename: 'css/[name].styles.css'
 })
 
-const happyThreadPool = packThreadCount === 0 ? null : HappyPack.ThreadPool({size: packThreadCount})
-
-const happyConf = {
-  loaders: ['babel-loader?cacheDirectory=true'],
-  threadPool: happyThreadPool,
-  verbose: true
-}
 
 module.exports = {
 	entry: {
-		app: './src/entry/index.jsx'
+		app: './src/index.js'
 	},
 	output: {
 		// filename: 'bundle.js',
@@ -54,7 +46,7 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: '/node_modules/',
         use: [
-          packThreadCount === 0 ? 'babel-loader?cacheDirectory=true' : 'happypack/loader',
+          'babel-loader?cacheDirectory=true',
           env === 'production' ? 'remove-debug-loader' : null
         ].filter(x => x)
       },
@@ -121,9 +113,8 @@ module.exports = {
 		new CleanWebpackPlugin(['dist']),
 		new HtmlWebpackPlugin({
       title: 'webpack4-splitchunk',
-      template: './view/index.html'
+      template: './public/index.html'
     }),
-    packThreadCount === 0 ? null : new HappyPack(happyConf),
     extractTextPlugin
   ]
 }
