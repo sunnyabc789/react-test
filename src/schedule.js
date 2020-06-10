@@ -33,6 +33,8 @@ function performUnitOfWork(currentFiber) {
 //在完成的时候要收集有副作用的fiber，然后组成effect list
 //每个fiber有两个属性 firstEffect指向第一个有副作用的子fiber lastEffect 指儿 最后一个有副作用子Fiber
 //中间的用nextEffect做成一个单链表 firstEffect=大儿子.nextEffect二儿子.nextEffect三儿子 lastEffect
+
+//三级二叉树模型
 function completeUnitOfWork(currentFiber) {//第一个完成的A1(TEXT)
     let returnFiber = currentFiber.return;//A1
     if (returnFiber) {
