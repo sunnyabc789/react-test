@@ -1,9 +1,8 @@
-import { PLACEMENT } from "./constants";
-import { setProps } from "./utils";
 
 
 let workInProgressRoot = null
 let nextUnitOfWork = null
+
 export function scheduleRoot(rootFiber) {
   workInProgressRoot = rootFiber
   nextUnitOfWork = rootFiber
@@ -24,116 +23,113 @@ function performUnitOfWork(currentFiber) {
   }
 }
 
-function beginWork(currentFiber) {
-  if (currentFiber.tag === 'TAG_ROOT') {
-    updateHostRoot(currentFiber)
-  } else if (currentFiber.tag === 'TAG_HOST') {
-    updateHost(currentFiber)
-  } else if (currentFiber.tag === 'TAG_TEXT') {
-    updateHostText(currentFiber)
+function completeUnitOfWork(currentFiber) {
+  let reutrnFiber = currentFiber.return
+
+  if (reutrnFiber) {
+    if (!reutrnFiber.firstFiber) {
+      reutrnFiber.firstFiber = currentFiber.firstFiber
+    }
+
+    if (!!currentFiber.lastFiber) {
+      if (!!reutrnFiber.lastFiber) {
+        reutrnFiber.lastFiber.nextFiber = currentFiber.lastFiber
+      }
+      reutrnFiber.lastFiber = currentFiber.lastFiber
+    }
+  }
+
+  let effectTag = currentFiber.effectTag
+  if (effectTag) {
+    if (reutrnFiber.lastFiber) {
+      reutrnFiber.lastFiber.nextFiber = currentFiber
+    } else {
+      reutrnFiber.firstFiber = currentFiber
+    }
+    reutrnFiber.lastFiber = currentFiber
   }
 }
 
-function updateHostText(currentFiber) {
-  if (!currentFiber.stateNode) {
-    currentFiber.stateNode = createDOM(currentFiber)
+function beginWork(currentFiber) {
+  if (currentFiber.tag === 'TAG_ROOT') {
+    updateRoot(currentFiber)
+  } else if (currentFiber.tag === 'TAG_HOST') {
+    updateHost()
+  } else if (currentFiber.tag === 'TAG_TEXT') {
+    updateHostText()
   }
+}
+
+function updateRoot(currentFiber) {
+  let newChildren = currentFiber.props.children
+  reconcileChildren(currentFiber, newChildren)
 }
 
 function updateHost(currentFiber) {
-  if (!currentFiber.stateNode) {
-    currentFiber.stateNode = createDOM(currentFiber)
+  if (!currentFiber.stataNode) {
+    currentFiber.stataNode = createDOM(currentFiber)
   }
-
   let newChildren = currentFiber.props.children
   reconcileChildren(currentFiber, newChildren)
+}
+
+function updateHostText(currentFiber) {
+  if (!currentFiber.stataNode) {
+    currentFiber.stataNode = createDOM(currentFiber)
+  }
 }
 
 function createDOM(currentFiber) {
   if (currentFiber.tag === 'TAG_TEXT') {
     return document.createTextNode(currentFiber.props.text)
-  }
-
-  if (currentFiber.tag === 'TAG_HOST') {
+  } else if (currentFiber.tag === 'TAG_HOST') {
     let stateNode = document.createElement(currentFiber.type)
     updateDOM(stateNode, {}, currentFiber.props)
+    return stateNode
   }
-}
-
-function updateDOM(stateNode, oldProps, newProps) {
-  setProps(stateNode, oldProps, newProps)
-}
-
-function updateHostRoot(currentFiber) {
-  let newChildren = currentFiber.props.children
-  reconcileChildren(currentFiber, newChildren)
 }
 
 function reconcileChildren(currentFiber, newChildren) {
-  let newChildIndex = 0
-  let prevSibling
-
-  while(newChildIndex < newChildIndex.length) {
-    let newChild = newChildren[newChildIndex]
+  let newChildIdx = 0
+  let prevSibling = ''
+  while (newChildIdx < newChildren.length) {
     let tag 
-    if (newChild.type === 'Element_Text') {
+    let newChild = newChildren[newChildIdx]
+    if (newChild.type === 'Element_text') {
       tag = 'TAG_TEXT'
     } else if (typeof newChild.type === 'string') {
       tag = 'TAG_HOST'
     }
+
     let newFiber = {
+      tag, 
+      stateNode: null,
       props: newChild.props,
-      return: currentFiber,
-      tag,
       type: newChild.type,
-      effectTag: PLACEMENT,
       nextEffect: null,
-      stateNode
+      effectTag: PLACEMENT,
+      return: currentFiber
     }
 
     if (newFiber) {
-      if (newChildIndex === 0) {
-        currentFiber.child = newFiber
+
+      if (newChildIdx === 0) {
+        currentFiber.child = newChild
       } else {
-        prevSibling.sibling = newFiber
+        prevSibling.sibling = newChild
       }
-      prevSibling = newFiber
+        prevSibling = newChild
     }
-    newChildIndex ++
+    newChildIdx ++
   }
 }
 
-function completeUnitOfWork(currentFiber) {
-  let returnFiber = currentFiber.return
-  if (returnFiber) {
-    if (!returnFiber.firstEffect) {
-      returnFiber.firstEffect = currentFiber.firstEffect
-    }
-
-    if (!!currentFiber.lastEffect) {
-      if (!!returnFiber.lastEffect) {
-        returnFiber.lastEffect.nextEffect = currentFiber.firstEffect
-      }
-      returnFiber.lastEffect = currentFiber.lastEffect
-    }
-  }
-  let effectTag = currentFiber.effectTag
-  if (effectTag) {
-    if (returnFiber.lastEffect) {
-      returnFiber.lastEffect.nextEffect = currentFiber
-    } else {
-      returnFiber.firstEffect = currentFiber
-    }
-    returnFiber.lastEffect = currentFiber;
-  }
-}
-
-
-function workLoop(deadline) {
+function workLoop(timeout) {
   let shouldYield = false
-  while (nextUnitOfWork && !shouldYield) {
+
+  while (nextUnitOfWork && shouldYield) {
     nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
-    shouldYield = deadline.timeRemaining() < 1
+    shouldYield = timeout.timeRemaining() < 1
   }
 
   requestIdelCallback(workLoop, { timeout: 500 })
