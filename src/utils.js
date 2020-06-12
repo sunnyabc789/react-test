@@ -22,3 +22,11 @@ function setProp(dom, key, value) {
         dom.setAttribute(key, value);
     }
 }
+
+
+
+export function deepEquals(obj1, obj2) {
+  let { children: oldChildren, ...oldProps } = obj1;
+  let { children: newChildren, ...newProps } = obj2;
+  return JSON.stringify(oldProps) === JSON.stringify(newProps);
+}
