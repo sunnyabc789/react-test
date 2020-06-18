@@ -1,6 +1,6 @@
 export class Update {
   constructor(payload) {
-      this.payload = payload;
+    this.payload = payload
   }
 }
 export class UpdateQueue {

@@ -1,3 +1,4 @@
+import { UpdateQueue, Update } from "./updateQueue";
 
 function createElement(type, config, ...children) {
   return {
@@ -16,3 +17,18 @@ function createElement(type, config, ...children) {
     }
   }
 }
+
+class Component {
+  constructor(props) {
+    this.props = props
+  }
+  setState(payload) {
+    this.internalFiber.updateQueue.enqueueUpdate(new Update(payload))
+  }
+}
+const React = {
+  createElement,
+  Component
+}
+
+export default React
