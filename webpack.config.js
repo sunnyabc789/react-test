@@ -22,7 +22,8 @@ const happyConf = {
 
 module.exports = {
 	entry: {
-		app: './src/entry/index.jsx'
+    app: './src/entry/index.jsx',
+    login: './src/entry/a.js'
 	},
 	output: {
 		// filename: 'bundle.js',
