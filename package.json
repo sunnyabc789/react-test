@@ -3,9 +3,19 @@
   "version": "1.0.0",
   "description": "test react character",
   "main": "index.js",
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.4.0"
+  },
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "webpack"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
@@ -17,49 +27,16 @@
     "url": "https://github.com/sunnyabc789/react-test/issues"
   },
   "homepage": "https://github.com/sunnyabc789/react-test#readme",
-  "devDependencies": {
-    "@babel/core": "^7.7.5",
-    "@babel/preset-env": "^7.7.6",
-    "@babel/preset-react": "^7.7.4",
-    "babel-cli": "6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.6",
-    "babel-plugin-import": "1.9.1",
-    "babel-plugin-module-resolver": "3.1.1",
-    "babel-plugin-transform-decorators-legacy": "^1.3.5",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "1.7.0",
-    "babel-preset-react": "6.24.1",
-    "babel-preset-stage-0": "6.24.1",
-    "babel-register": "6.26.0",
-    "clean-webpack-plugin": "^0.1.19",
-    "css-loader": "^1.0.1",
-    "eslint": "^5.9.0",
-    "eslint-plugin-react": "^7.11.1",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "happypack": "^5.0.0",
-    "html-webpack-plugin": "^3.2.0",
-    "less-loader": "^4.1.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "style-loader": "^0.23.1",
-    "stylus-loader": "^3.0.2",
-    "url-loader": "^1.1.2",
-    "webpack": "^4.25.1",
-    "webpack-cli": "^3.1.2",
-    "worker-loader": "^2.0.0"
-  },
-  "dependencies": {
-    "babel-polyfill": "6.26.0",
-    "babel-runtime": "6.26.0",
-    "less": "^3.8.1",
-    "lodash": "^4.17.11",
-    "module-resolver": "^1.0.0",
-    "muuri": "^0.8.0",
-    "muuri-react": "^3.0.3",
-    "stylus": "^0.54.5",
-    "transform-runtime": "0.0.0",
-    "webpack-dev-server": "^3.9.0"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

@@ -1,6 +1,7 @@
 /* React */
-import React, { useContext, useState, useEffect } from "react";
+import ReactDom from "react-dom";
 
+import React, { useContext, useState, useEffect } from "react";
 
 let ReactReduxContext = React.createContext();
 
@@ -27,9 +28,10 @@ function bindActionCreators(actionCreators, dispatch) {
  * @param {*} mapDispatchToProps 把dispatch方法映射组件属性对象
  */
 //useRef useEffect
- function connect (mapStateToProps, mapDispatchToProps) {
+function connect(mapStateToProps, mapDispatchToProps) {
   return function (OldComponent) {
     return function (props) {
+      console.log('here===');
       //这是返回那个React组件ConnectedCounter1
       let context = useContext(ReactReduxContext); //context.store
       let [state, setState] = useState(
@@ -53,9 +55,12 @@ function bindActionCreators(actionCreators, dispatch) {
     };
   };
 }
-connect(() => ({}), {add: () => {}})()
-
+console.log('here===');
+function App() {
+  return <div>a</div>
+}
+const App1 = connect(() => ({}), { add: () => {} })(App);
 
 
 // ReactDom.render(<App />, document.getElementById("container"));
-// ReactDom.render(<App />, document.getElementById("container"));
+ReactDom.render(<App1 />, document.getElementById("root"));
