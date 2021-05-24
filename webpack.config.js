@@ -29,6 +29,19 @@ module.exports = {
 		filename: '[name].[hash].js',
 		path: path.resolve(__dirname, 'dist')
   },
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM',
+    'echarts': 'echarts',
+    'd3': 'd3',
+    'antd': 'antd',
+    'moment': 'moment',
+    'crypto-js': 'CryptoJS',
+    'lz-string': 'LZString',
+    'highlight.js': 'hljs',
+    'jquery': '$',
+    'lodash': '_'
+  },
   devtool:"#eval-source-map",
   devServer: {
     headers: {
