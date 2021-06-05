@@ -29,14 +29,13 @@ function withKeepAlive(
         cacheState.status !== cacheTypes.DESTROY
       ) {
         let doms = cacheState.doms;
-        console.log(ref.current,'abc===')
         doms.forEach((dom) => ref.current.appendChild(dom));
-        // if (scroll) {
-        //   doms.forEach((dom) => {
-        //     if (cacheState.scrolls[dom])
-        //       dom.scrollTop = cacheState.scrolls[dom];
-        //   });
-        // }
+        if (scroll) {
+          doms.forEach((dom) => {
+            if (cacheState.scrolls[dom])
+              dom.scrollTop = cacheState.scrolls[dom];
+          });
+        }
       } else {
         mount({
           cacheId,

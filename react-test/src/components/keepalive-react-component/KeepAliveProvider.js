@@ -41,8 +41,20 @@ function KeepAliveProvider(props) {
   // 因此路由切换 WithKeepAlive卸载 WithKeepAlive上树
   // 此时有一个问题 第一次渲染 在cache_${cacheId}下 切换路由 为何element没了
   // element消失原理 doms的指针被缓存起来了
-  // 如果执行了 ref.current.appendChild(dom), cache_${cacheId}下 根本不会有节点 如果不执行就会有 
+  // 如果执行了 ref.current.appendChild(dom), cache_${cacheId}下 根本不会有节点 如果不执行就会有
   // appendChild 会劫持dom 把一个节点剪切到另一个上面去 不是复制
+  // doms就是element
+  // 可是这个样子劫持真实dom 为什么state还能保留的?
+  // 因为 element是不包含Route的 虚拟DOM也被保留了
+
+  // 那么 input里来个条件渲染 是否会出问题? 没出问题 
+  // 带state的孙组件是否会出问题？ 没出问题
+  // 原理猜测  doms和react的虚拟dom中对真实dom的指针 都指向了同一份内存 虚拟dom操作真实dom  doms受到影响
+  // Route 把真实dom卸载了 虚拟dom留下了  本来虚拟dom卸载 会卸载掉真实dom 但是真实dom没挂在element下面了 同时element会保留
+  
+
+  // 但是可以沉淀出可快速开发的高体验度表格组件 为开发提效
+
   return (
     <CacheContext.Provider
       value={{ mount, cacheStates, dispatch, handleScroll }}
@@ -51,7 +63,6 @@ function KeepAliveProvider(props) {
       {Object.values(cacheStates)
         .filter((cacheState) => cacheState.status !== cacheTypes.DESTROY)
         .map(({ cacheId, element }) => {
-          console.log(element, "element===");
           return (
             <div
               id={`cache_${cacheId}`}

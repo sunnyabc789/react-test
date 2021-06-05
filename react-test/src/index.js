@@ -9,6 +9,22 @@ import {
   WithKeepAlive,
 } from "./components/keepalive-react-component";
 
+import { SagaModel } from "redux-saga-model";
+import { Provider } from "react-redux";
+import todoModel from "./todoModel";
+
+const sagaModel = new SagaModel({
+  initialState: {},
+  // initialReducer: () => {},
+  initialMiddleware: [],
+  // initialModels: {},
+  // history,
+  // prefix,
+});
+
+const store = sagaModel.store();
+
+sagaModel.register(todoModel);
 
 // const KeepAliveHome = WithKeepAlive(Home, { cacheId: "Home" });
 const KeepGoodsList = WithKeepAlive(GoodsList, { cacheId: "GoodsList", scroll: true });
@@ -16,26 +32,28 @@ const KeepUserAdd = WithKeepAlive(UserAdd, { cacheId: "UserAdd" });
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <KeepAliveProvider>
-        <ul>
-          <li>
-            <Link to="/">首页</Link>
-          </li>
-          <li>
-            <Link to="/list">用户列表</Link>
-          </li>
-          <li>
-            <Link to="/add">添加用户</Link>
-          </li>
-        </ul>
-        <Switch>
-          <Route path="/" component={Home} exact />
-          {/* <Route path="/list" component={KeepGoodsList} /> */}
-          <Route path="/add" component={KeepUserAdd} />
-        </Switch>
-      </KeepAliveProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <KeepAliveProvider>
+          <ul>
+            <li>
+              <Link to="/">首页</Link>
+            </li>
+            <li>
+              <Link to="/list">用户列表</Link>
+            </li>
+            <li>
+              <Link to="/add">添加用户</Link>
+            </li>
+          </ul>
+          <Switch>
+            <Route path="/" component={Home} exact />
+            {/* <Route path="/list" component={KeepGoodsList} /> */}
+            <Route path="/add" component={KeepUserAdd} />
+          </Switch>
+        </KeepAliveProvider>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
