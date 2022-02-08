@@ -36,6 +36,7 @@ module.exports = {
       'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
     },
     historyApiFallback: true,
+    port: 3000,
     hot: true,
     // open: true,
     inline: true,
