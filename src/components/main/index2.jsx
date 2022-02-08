@@ -6,14 +6,10 @@ function HOC(Component) {
   class ConfigedComponent extends React.Component {
 
     render() {
-      const content = (
-        <Component
-            children={this.props.children}
-            // {...newContextProps}
-            // ref={obj.isClassComponent(Component) ? this._getInstance : null}
-        />
-    );
-    return content
+      return <Component
+      >
+        {this.props.children}
+        </Component>
     }
   }
 
@@ -32,8 +28,9 @@ class Loading1 extends React.Component {
 }
 
 const Loading = HOC(Loading1)
+// const Loading = Loading1
 
-export default class App extends React.Component { 
+ class App extends React.Component { 
 
   constructor() {
     super() 
@@ -62,9 +59,31 @@ export default class App extends React.Component {
       </div>
     );
     if (loading) {
-      // const loadingClassName = `${prefix}table-loading`;
       return <LoadingComponent >{content}</LoadingComponent>;
     }
     return content
   }
 }
+
+function ABC(WrappedComponent) {
+  class PreTable extends React.Component {
+    render() {
+        const { loadingComponent, loading, ...others } = this.props;
+        const LComponent = loadingComponent || Loading;
+        if (loading) {
+            return (
+                <LComponent >
+                    <WrappedComponent {...others} />
+                </LComponent>
+            );
+        } else {
+            return <WrappedComponent {...others} />;
+        }
+    }
+}
+
+  return PreTable;
+}
+
+// export default ABC(App)
+export default App
